@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from app.config import Config
 from app.extensions import db
 from app.routes import register_blueprints
@@ -8,6 +9,7 @@ from app.apis.v1.user_api import blueprint as user_bp
 def create_app():
     app = Flask(__name__)
     app.config.from_object("app.config.Config")
+    CORS(app, origins='http://localhost:3000', supports_credentials=True)
 
     db.init_app(app)
 
@@ -16,8 +18,8 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    app.register_blueprint(property_bp)
-    app.register_blueprint(user_bp)
+    app.register_blueprint(property_bp, url_prefix='/api/v1')
+    app.register_blueprint(user_bp, url_prefix='/api/v1')
     
     # register_blueprints(app)
 
