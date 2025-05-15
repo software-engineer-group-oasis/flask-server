@@ -17,7 +17,7 @@ def create_app():
     # 创建的依据是寻找继承了SQLAlchemy.Model的类
     with app.app_context():
         db.create_all()
-
+    print("db connectd: ", db)
     app.register_blueprint(property_bp, url_prefix='/api/v1')
     app.register_blueprint(user_bp, url_prefix='/api/v1')
     
