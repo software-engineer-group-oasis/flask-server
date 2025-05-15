@@ -10,6 +10,7 @@ def get_property_by_id(property_id):
     amenities = PropertyService.get_amenities_by_property_id(property_id)
     images = PropertyService.get_images_by_property_id(property_id)
     location = PropertyService.get_location_by_id(property.location_id)
+    seller_contact = PropertyService.get_seller_contact_by_id(property.seller_contact_id)
     data = {
         'id': property.property_id,
         'name': property.name,
@@ -26,6 +27,12 @@ def get_property_by_id(property_id):
         'is_featured': property.is_featured,
         'location_id': property.location_id,
         'seller_contact_id': property.seller_contact_id,
+        'seller_contact': {
+            'name': seller_contact.name,
+            'email': seller_contact.email,
+            'phone': seller_contact.phone,
+            'image': seller_contact.image if seller_contact.image else "http://localhost:3000/images/default.png"
+        },
         'created_at': property.created_at.isoformat(),
         'updated_at': property.updated_at.isoformat(),
         "amenities":amenities.split(',') if amenities else "",

@@ -1,5 +1,5 @@
 # from app.models.property import Property
-from app.models.models import Property, PropertyImage, property_amenities, Amenity, Location
+from app.models.models import Property, PropertyImage, property_amenities, Amenity, Location, SellerContact
 from app.extensions import db
 from sqlalchemy import func
 
@@ -39,3 +39,7 @@ class PropertyService:
     @staticmethod
     def get_location_by_id(location_id):
         return Location.query.get_or_404(location_id)
+
+    @staticmethod
+    def get_seller_contact_by_id(contact_id):
+        return SellerContact.query.get_or_404(contact_id)

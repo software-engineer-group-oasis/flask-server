@@ -24,6 +24,7 @@ class SellerContact(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(255))
     phone = db.Column(db.String(50))
+    image = db.Column(db.String(255))
 
 
 class Amenity(db.Model):
@@ -66,3 +67,11 @@ class Property(db.Model):
     seller_contact = db.relationship('SellerContact', uselist=False)
     amenities = db.relationship('Amenity', secondary=property_amenities, lazy='dynamic')
     images = db.relationship('PropertyImage', backref='property', lazy='dynamic')
+
+class Renter(db.Model):
+    __tablename__ = 'renters'
+    renter_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.String(20))
+    email = db.Column(db.String(100), nullable=False, unique=True)  # 添加唯一约束
+    password = db.Column(db.String(100), nullable=False)
