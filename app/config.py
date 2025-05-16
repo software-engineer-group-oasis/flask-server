@@ -11,6 +11,7 @@ class Config:
     SECRET_KEY = 'ZfmQKs6MZKZmovBAI9Ng8NPVBdF0cofc50ZDiTSWcBM='  # 生产环境必须修改
     JWT_ALGORITHM = 'HS256'
     JWT_EXPIRATION = timedelta(hours=24)
+    DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
 # 继承基类Config
 class DevelopmentConfig(Config):

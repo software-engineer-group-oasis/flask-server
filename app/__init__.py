@@ -5,6 +5,7 @@ from app.extensions import db
 from app.routes import register_blueprints
 from app.apis.v1.property_api import blueprint as property_bp
 from app.apis.v1.user_api import blueprint as user_bp
+from app.apis.v1.deepseek_api import blueprint as deepseek_bp
 
 def create_app():
     app = Flask(__name__)
@@ -20,8 +21,10 @@ def create_app():
     print("db connectd: ", db)
     app.register_blueprint(property_bp, url_prefix='/api/v1')
     app.register_blueprint(user_bp, url_prefix='/api/v1')
+    app.register_blueprint(deepseek_bp, url_prefix='/api/v1')
     
     # register_blueprints(app)
+
 
     return app
     
