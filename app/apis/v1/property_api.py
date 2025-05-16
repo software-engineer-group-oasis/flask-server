@@ -1,17 +1,18 @@
+from xml.sax.handler import all_properties
+
 from flask import Blueprint, request
 from app.services.property_service import PropertyService
 from app.utils.response import success
 
 blueprint = Blueprint('property', __name__)
 
-@blueprint.route('/properties/<property_id>', methods=['GET'])
-def get_property_by_id(property_id):
-    property = PropertyService.get_by_property_id(property_id)
+def get_property_detail(property):
+    property_id = property.property_id
     amenities = PropertyService.get_amenities_by_property_id(property_id)
     images = PropertyService.get_images_by_property_id(property_id)
     location = PropertyService.get_location_by_id(property.location_id)
     seller_contact = PropertyService.get_seller_contact_by_id(property.seller_contact_id)
-    data = {
+    return {
         'id': property.property_id,
         'name': property.name,
         'description': property.description,
@@ -35,15 +36,26 @@ def get_property_by_id(property_id):
         },
         'created_at': property.created_at.isoformat(),
         'updated_at': property.updated_at.isoformat(),
-        "amenities":amenities.split(',') if amenities else "",
-        "images":images if images else "",
+        "amenities": amenities.split(',') if amenities else "",
+        "images": images if images else "",
         "location": {
             "address": location.address,
             "city": location.city,
             "province": location.province,
         }
     }
+
+@blueprint.route('/properties/<property_id>', methods=['GET'])
+def get_property_by_id(property_id):
+    property = PropertyService.get_by_property_id(property_id)
+    data = get_property_detail(property)
     return success(data=data)
+
+@blueprint.route('/properties', methods=['GET'])
+def get_properties():
+    properties = PropertyService.get_all()
+    all_properties_data = [get_property_detail(prop) for prop in properties]
+    return success(data=all_properties_data)
 
 # @blueprint.route('/properties', methods=['POST'])
 # def create_property():
