@@ -12,6 +12,7 @@ class Config:
     JWT_ALGORITHM = 'HS256'
     JWT_EXPIRATION = timedelta(hours=24)
     DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+    BAIDU_MAP_AK = os.getenv("BAIDU_MAP_AK")
 
 # 继承基类Config
 class DevelopmentConfig(Config):
