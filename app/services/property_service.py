@@ -43,3 +43,7 @@ class PropertyService:
     @staticmethod
     def get_seller_contact_by_id(contact_id):
         return SellerContact.query.get_or_404(contact_id)
+
+    @staticmethod
+    def filter_properties_by_location(province, city):
+        return Property.filter_by_location(province, city)

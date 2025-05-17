@@ -78,6 +78,15 @@ class Property(db.Model):
     amenities = db.relationship('Amenity', secondary=property_amenities, lazy='dynamic')
     images = db.relationship('PropertyImage', backref='property', lazy='dynamic')
 
+    @classmethod
+    def filter_by_location(cls, province=None, city=None):
+        query = cls.query.join(Location)
+        if province:
+            query = query.filter(Location.province == province)
+        if city:
+            query = query.filter(Location.city == city)
+        return query.order_by(cls.created_at.desc())
+
 class Renter(db.Model):
     __tablename__ = 'renters'
     renter_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
