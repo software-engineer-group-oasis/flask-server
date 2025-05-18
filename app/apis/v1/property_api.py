@@ -2,7 +2,7 @@ from xml.sax.handler import all_properties
 
 from flask import Blueprint, request
 from app.services.property_service import PropertyService
-from app.utils.response import success
+from app.utils.response import success, error
 
 blueprint = Blueprint('property', __name__)
 
@@ -65,13 +65,12 @@ def search_properties():
     all_properties_data = [get_property_detail(prop) for prop in properties]
     return success(data=all_properties_data)
 
-# @blueprint.route('/properties', methods=['POST'])
-# def create_property():
-#     data = request.json
-#     prop = PropertyService.create(data)
-#     data = {'id':prop.id, 
-#             'title':prop.title, 
-#             'address':prop.address, 
-#             'price': prop.price}
-#     # 201 created
-#     return success(data, code=201)
+@blueprint.route('/properties', methods=['POST'])
+def create_property():
+    data = request.json
+    try:
+        prop = PropertyService.create_property_with_related_data(data)
+        data = get_property_detail(prop)
+        return success(data, code=201)
+    except Exception as e:
+        return error(message=str(e), code=500)
