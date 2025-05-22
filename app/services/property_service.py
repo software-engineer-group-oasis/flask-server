@@ -3,6 +3,9 @@ from app.models.models import Property, PropertyImage, property_amenities, Ameni
 from app.extensions import db
 from sqlalchemy import func
 from sqlalchemy.exc import SQLAlchemyError
+from werkzeug.utils import secure_filename
+from flask import current_app
+import os
 
 class PropertyService:
     
@@ -111,3 +114,18 @@ class PropertyService:
         except Exception as e:
             db.session.rollback()
             raise e
+    
+    @staticmethod
+    def upload_image(file):
+        if not file:
+            raise ValueError('请上传图片')
+        
+        filename = secure_filename(file.filename)
+        upload_folder = os.path.join(current_app.root_path, 'static', 'uploads')
+        if not os.path.exists(upload_folder):
+            os.makedirs(upload_folder)
+        file_path = os.path.join(upload_folder, filename)
+        
+        file.save(file_path)
+        image_url = f"http://localhost:5000/static/uploads/{filename}"
+        return image_url

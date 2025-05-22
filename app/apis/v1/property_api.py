@@ -74,3 +74,14 @@ def create_property():
         return success(data, code=201)
     except Exception as e:
         return error(message=str(e), code=500)
+
+@blueprint.route('/upload', methods=['POST'])
+def upload_image():
+    files = request.files.getlist('images')
+    urls = []
+    if not files:
+        return error(message='请上传图片', code=400)
+    for file in files:
+        url = PropertyService.upload_image(file)
+        urls.append(url)
+    return success(data=urls)
