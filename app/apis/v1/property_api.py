@@ -61,7 +61,9 @@ def get_properties():
 def search_properties():
     province = request.args.get('province')
     city = request.args.get('city')
+    print(f'searching: {province} {city}')
     properties = PropertyService.filter_properties_by_location(province, city)
+    print('search result: ', properties)
     all_properties_data = [get_property_detail(prop) for prop in properties]
     return success(data=all_properties_data)
 

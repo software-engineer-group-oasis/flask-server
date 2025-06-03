@@ -11,7 +11,7 @@ class PropertyService:
     
     @staticmethod
     def get_all():
-        return Property.query.all()
+        return Property.query.order_by(Property.updated_at.desc()).all()
     
     @staticmethod
     def create(data):
@@ -50,7 +50,7 @@ class PropertyService:
 
     @staticmethod
     def filter_properties_by_location(province, city):
-        return Property.filter_by_location(province, city)
+        return Property.filter_by_location(province, city).all()
 
     @staticmethod
     def create_property_with_related_data(data):

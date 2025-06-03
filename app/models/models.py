@@ -82,9 +82,9 @@ class Property(db.Model):
     def filter_by_location(cls, province=None, city=None):
         query = cls.query.join(Location)
         if province:
-            query = query.filter(Location.province == province)
+            query = query.filter(Location.province.like(f'%{province}%'))
         if city:
-            query = query.filter(Location.city == city)
+            query = query.filter(Location.city.like(f'%{city}%'))
         return query.order_by(cls.created_at.desc())
 
 class Renter(db.Model):
