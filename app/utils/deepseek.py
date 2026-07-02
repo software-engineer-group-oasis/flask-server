@@ -13,5 +13,21 @@ def chat_with_deepseek(message):
     )
     return response.choices[0].message.content
 
+
+def stream_chat_with_deepseek(message):
+    """流式调用 DeepSeek，逐 chunk 返回文本增量"""
+    stream = client.chat.completions.create(
+        model="deepseek-chat",
+        stream=True,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant in house rental domain. please analyze the json data and provide the answer."},
+            {"role": "user", "content": message},
+        ],
+    )
+    for chunk in stream:
+        delta = chunk.choices[0].delta
+        if getattr(delta, "content", None):
+            yield delta.content
+
 if __name__ == '__main__':
     print(chat_with_deepseek("请简要介绍一下deepseek的产品"))
